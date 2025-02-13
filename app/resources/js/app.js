@@ -1,23 +1,29 @@
-import './bootstrap';
-import '../css/app.css';
-
-import { createApp, h } from 'vue';
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import { createInertiaApp } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import { createRouter, createWebHistory } from 'vue-router';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+import Dashboard from './Pages/Dashboard.vue';
+import Contacts from './Pages/Contacts.vue';
+import ContactDetails from './Pages/ContactDetails.vue';
+
+const routes = [
+    { path: '/', component: Dashboard },
+    { path: '/contacts', component: Contacts },
+    { path: '/contacts/:id', component: ContactDetails }
+];
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes
+});
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
-    setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .use(ZiggyVue)
+    resolve: name => import(`./Pages/${name}.vue`),
+    setup({ el, App, props }) {
+        createApp(App)
+            .use(createPinia())
+            .use(router)
             .mount(el);
-    },
-    progress: {
-        color: '#4B5563',
     },
 });
