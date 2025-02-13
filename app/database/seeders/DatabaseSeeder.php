@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Note;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,9 +20,23 @@ class DatabaseSeeder extends Seeder
         $account1 = Account::factory()->create();
         $account2 = Account::factory()->create();
 
-        $user1 = User::factory()->create();
-        $user2 = User::factory()->create();
-        $user3 = User::factory()->create();
+        $user1 = User::factory()->create([
+            'name' => 'User One',
+            'email' => '1@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        $user2 = User::factory()->create([
+            'name' => 'User Two',
+            'email' => '2@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        $user3 = User::factory()->create([
+            'name' => 'User Three',
+            'email' => '3@example.com',
+            'password' => Hash::make('password'),
+        ]);
 
         $account1->users()->attach([$user1->id, $user2->id]);
         $account2->users()->attach($user3->id);
