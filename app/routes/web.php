@@ -38,17 +38,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/', function () {
-    return Inertia::render('Dashboard');
-});
-
-Route::get('/contacts', function () {
-    return Inertia::render('Contacts');
-});
-
-Route::get('/contacts/{id}', function ($id) {
-    return Inertia::render('ContactDetails', ['id' => $id]);
-});
 
 
 
