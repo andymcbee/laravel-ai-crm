@@ -37,11 +37,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/contacts', function () {
-        return Inertia::render('Contacts');
-    })->name('contacts');
+//    Route::get('/contacts', function () {
+//        return Inertia::render('Contacts');
+//    })->name('contacts');
 
-    Route::get('/get-contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
 
 
 

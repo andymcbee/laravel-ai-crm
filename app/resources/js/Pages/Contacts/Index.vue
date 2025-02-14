@@ -3,12 +3,15 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { AgGridVue } from "ag-grid-vue3";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
-import { onMounted, ref } from "vue";
-import axios from "axios";
+import {computed,  ref} from "vue";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-const rowData = ref([]);
+const props = defineProps({
+  contacts: Array
+});
+
+const rowData = computed(() => props.contacts)
 
 const colDefs = ref([
     { field: "first_name", headerName: "First Name", sortable: true, filter: true },
@@ -21,28 +24,9 @@ const colDefs = ref([
 
 
 
-const fetchData = async () => {
-    try {
-        const response = await fetch("/get-contacts", {
-            method: "GET",
-            credentials: "include", // Important for sending auth cookies
-            headers: {
-                "Accept": "application/json"
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        rowData.value = await response.json();
-    } catch (error) {
-        console.error("Failed to fetch contacts data:", error);
-    }
-};
 
 
-onMounted(fetchData);
+
 </script>
 
 <template>
