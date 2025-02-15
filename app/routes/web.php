@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
     Route::get('/contacts/{contact}/edit', [ContactController::class, 'edit'])->name('contacts.edit');
     Route::put('/contacts/{contact}', [ContactController::class, 'update'])->name('contacts.update');
+    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
 
     Route::post('/account/switch', function (Request $request) {

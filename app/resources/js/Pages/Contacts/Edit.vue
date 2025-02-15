@@ -3,6 +3,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 import UpdateContactInformationForm from './Partials/UpdateContactInformationForm.vue';
 import { Head } from '@inertiajs/vue3';
+import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
+import DeleteContactForm from "@/Pages/Contacts/Partials/DeleteContactForm.vue";
 
 const props = defineProps(["contact"]);
 </script>
@@ -22,6 +24,9 @@ const props = defineProps(["contact"]);
                         :contact="contact"
                         class="max-w-xl"
                     />
+                </div>
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <DeleteContactForm class="max-w-xl" :contact="contact" />
                 </div>
 
 
