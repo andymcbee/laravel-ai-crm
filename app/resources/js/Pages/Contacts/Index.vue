@@ -14,6 +14,13 @@ const props = defineProps({
 const rowData = computed(() => props.contacts)
 
 const colDefs = ref([
+    {
+        field: "action",
+        headerName: "Action",
+        cellRenderer: params => {
+            return `<a href="/contacts/${params.data.id}" class="text-blue-500 hover:underline">View</a>`;
+        }
+    },
     { field: "account_id", headerName: "Account", sortable: true, filter: true },
     { field: "first_name", headerName: "First Name", sortable: true, filter: true },
     { field: "last_name", headerName: "Last Name", sortable: true, filter: true },
