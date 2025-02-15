@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+
+import { Head, Link } from '@inertiajs/vue3';
 
 
 const props = defineProps({
@@ -18,6 +19,10 @@ const props = defineProps({
         <template #header>
             <div class="flex h-screen  text-gray-800">
                 <div class=" w-72  p-5 overflow-y-auto" >
+                    <Link :href="route('contacts.edit', contact.id)" class="text-blue-500 hover:underline">
+                        Edit Contact
+                    </Link>
+
                     <div class="text-lg font-bold">{{contact.first_name}} {{contact.last_name}}</div>
                     <div> {{ contact.title }}</div>
                     <div> {{contact.company}}</div>

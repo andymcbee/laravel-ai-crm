@@ -83,6 +83,28 @@ class ContactController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return Inertia::render('Contacts/Create', []);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'account_id' => 'nullable|exists:accounts,id',  // Validate accountId
+            'first_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'company' => 'nullable|string|max:255',
+            'title' => 'nullable|string|max:255',
+        ]);
+
+        Contact::create($validated);
+
+        return redirect()->route('contacts.index')->with('success', 'Contact created successfully.');
+    }
+
     public function destroy(Contact $contact)
     {
         $contact->delete();
