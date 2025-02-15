@@ -6,8 +6,12 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import AccountSwitcher from '@/Components/AccountSwitcher.vue';
 
 const showingNavigationDropdown = ref(false);
+
+
+
 </script>
 
 <template>
@@ -29,10 +33,14 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                <NavLink :href="route('contacts.index')" :active="route().current('contacts.index')">
+                                    Contacts
                                 </NavLink>
+
                             </div>
+                        </div>
+                        <div class="flex items-center">
+                            <AccountSwitcher />
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -40,6 +48,7 @@ const showingNavigationDropdown = ref(false);
                             <div class="ms-3 relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
+
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"

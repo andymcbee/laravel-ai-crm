@@ -14,12 +14,14 @@ const props = defineProps({
 const rowData = computed(() => props.contacts)
 
 const colDefs = ref([
+    { field: "account_id", headerName: "Account", sortable: true, filter: true },
     { field: "first_name", headerName: "First Name", sortable: true, filter: true },
     { field: "last_name", headerName: "Last Name", sortable: true, filter: true },
     { field: "title", headerName: "Title", sortable: true, filter: true },
     { field: "company", headerName: "Company", sortable: true, filter: true },
     { field: "email", headerName: "Email", sortable: true, filter: true },
     { field: "phone", headerName: "Phone", sortable: true, filter: true },
+
 ]);
 
 

@@ -3,7 +3,10 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 
@@ -43,6 +46,25 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
     Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+
+
+    Route::post('/account/switch', function (Request $request) {
+
+        $accountId = $request->input('account_id');
+
+        $user = Auth::user();
+
+        if(!$user->accounts()->where('accounts.id', $accountId)->exists()) {
+            return response()->json([
+                'errors' => 'unauthorized'
+            ],403);
+        }
+
+        Session::put('active_account', $user->accounts()->find($accountId));
+
+        return back();
+
+    });
 
 
 

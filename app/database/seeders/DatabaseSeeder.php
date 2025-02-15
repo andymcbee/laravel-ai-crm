@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         $account1 = Account::factory()->create();
         $account2 = Account::factory()->create();
+        $account3 = Account::factory()->create();
 
         $user1 = User::factory()->create([
             'name' => 'User One',
@@ -40,10 +41,12 @@ class DatabaseSeeder extends Seeder
 
         $account1->users()->attach([$user1->id, $user2->id]);
         $account2->users()->attach($user3->id);
+        $account3->users()->attach($user1->id);
 
         Contact::factory(5)->for($account1)->create();
         Contact::factory(5)->for($account2)->create();
+        Contact::factory(5)->for($account3)->create();
 
-        Note::factory(10)->create();
+        Note::factory(100)->create();
     }
 }

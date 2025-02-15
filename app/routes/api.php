@@ -24,5 +24,4 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user()->user();
     });
 
-    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 });

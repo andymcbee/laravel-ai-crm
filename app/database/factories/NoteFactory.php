@@ -17,8 +17,10 @@ class NoteFactory extends Factory
      */
     public function definition(): array
     {
+
+
         return [
-            'contact_id' => Contact::factory(),
+            'contact_id' => Contact::inRandomOrder()->first()->id ?? Contact::factory(),
             'text' => fake()->sentence()
         ];
     }
