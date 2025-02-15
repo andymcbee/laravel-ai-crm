@@ -23,8 +23,8 @@ class ContactController extends Controller
 
         return Inertia::render('Contacts/Index', [
             'contacts' => $contacts,
-            'activeAccount' => $activeAccount,  // ✅ Pass active account explicitly
-            'userAccounts' => $user->accounts,  // ✅ Pass accounts explicitly for dropdown
+            'activeAccount' => $activeAccount,
+            'userAccounts' => $user->accounts,  
         ]);
     }
 
@@ -78,8 +78,18 @@ class ContactController extends Controller
 
     public function edit(Contact $contact)
     {
+
+        $user = Auth::user();
+        $activeAccount = session('active_account');
+
+        if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
+            abort(403, 'Unauthorized access to account.');
+        }
+
         return Inertia::render('Contacts/Edit', [
-            'contact' => $contact
+            'contact' => $contact,
+            'activeAccount' => $activeAccount,
+            'userAccounts' => $user->accounts,
         ]);
     }
 
