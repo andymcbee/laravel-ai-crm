@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -49,5 +50,39 @@ class ContactController extends Controller
             'userAccounts' => $user->accounts, // ✅ Pass accounts explicitly for dropdown
         ]);
     }
+
+    public function update(Request $request, Contact $contact)
+    {
+        // check for auth
+        // investigate how to ensure account_id isn't tampered with
+        // we need it to be fillable, but a user should not update it
+        // to just anything. only their own... or not at all?
+        // needs to be fillable for creating though.
+        // maybe throw error if it detects account_id?
+
+        // Validate only editable fields
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'company' => 'nullable|string|max:255',
+            'title' => 'nullable|string|max:255',
+        ]);
+
+        // Update and save contact
+        $contact->update($validated);
+
+        return redirect()->back()->with('success', 'Contact updated successfully.');
+    }
+
+    public function edit(Contact $contact)
+    {
+        return Inertia::render('Contacts/Edit', [
+            'contact' => $contact
+        ]);
+    }
+
+
 
 }
