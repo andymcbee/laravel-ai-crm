@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Contact;
 use Carbon\Carbon;
@@ -74,6 +75,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/contacts/{contact}/edit', [ContactController::class, 'edit'])->name('contacts.edit');
     Route::put('/contacts/{contact}', [ContactController::class, 'update'])->name('contacts.update');
     Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+
+
+    // notes
+
+    Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
 
 
 
