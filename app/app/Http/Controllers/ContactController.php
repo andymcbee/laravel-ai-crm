@@ -24,7 +24,7 @@ class ContactController extends Controller
         return Inertia::render('Contacts/Index', [
             'contacts' => $contacts,
             'activeAccount' => $activeAccount,
-            'userAccounts' => $user->accounts,  
+            'userAccounts' => $user->accounts,
         ]);
     }
 
@@ -95,7 +95,18 @@ class ContactController extends Controller
 
     public function create()
     {
-        return Inertia::render('Contacts/Create', []);
+
+        $user = Auth::user();
+        $activeAccount = session('active_account');
+
+        if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
+            abort(403, 'Unauthorized access to account.');
+        }
+
+        return Inertia::render('Contacts/Create', [
+            'activeAccount' => $activeAccount,
+            'userAccounts' => $user->accounts,
+        ]);
     }
 
     public function store(Request $request)

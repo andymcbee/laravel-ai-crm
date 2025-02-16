@@ -4,6 +4,8 @@ import { Head } from '@inertiajs/vue3';
 import { AgGridVue } from "ag-grid-vue3";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import {computed,  ref} from "vue";
+import {Link} from "@inertiajs/vue3";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -31,11 +33,6 @@ const colDefs = ref([
 
 ]);
 
-
-
-
-
-
 </script>
 
 <template>
@@ -43,7 +40,15 @@ const colDefs = ref([
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Contacts</h2>
+            <div class="flex justify-between items-center">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Contacts</h2>
+
+                <PrimaryButton :to="route('contacts.create')">
+                    + Add Contact
+                </PrimaryButton>
+
+
+            </div>
         </template>
 
         <div class="py-12">

@@ -38,6 +38,7 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
 
                             </div>
+
                         </div>
                         <div class="flex items-center">
                             <AccountSwitcher />
