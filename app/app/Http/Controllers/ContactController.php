@@ -56,12 +56,7 @@ class ContactController extends Controller
 
     public function update(Request $request, Contact $contact)
     {
-        // check for auth
-        // investigate how to ensure account_id isn't tampered with
-        // we need it to be fillable, but a user should not update it
-        // to just anything. only their own... or not at all?
-        // needs to be fillable for creating though.
-        // maybe throw error if it detects account_id?
+        $this->authorize('update', $contact);
 
         // Validate only editable fields
         $validated = $request->validate([
@@ -83,16 +78,22 @@ class ContactController extends Controller
     {
 
         $user = Auth::user();
+        $this->authorize('update', $contact);
         $activeAccount = session('active_account');
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
             abort(403, 'Unauthorized access to account.');
         }
 
+        // we pass the delete permission outcome because the delete section should only
+        // be visible to admin, not moderators.
         return Inertia::render('Contacts/Edit', [
             'contact' => $contact,
             'activeAccount' => $activeAccount,
             'userAccounts' => $user->accounts,
+            'can' => [
+                'delete' => Auth::user()->can('delete', $contact),
+            ]
         ]);
     }
 
@@ -100,7 +101,10 @@ class ContactController extends Controller
     {
 
         $user = Auth::user();
+
         $activeAccount = session('active_account');
+
+        $this->authorize('create', $activeAccount);
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
             abort(403, 'Unauthorized access to account.');
@@ -114,6 +118,12 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
+
+        $activeAccount = session('active_account');
+
+        $this->authorize('create', $activeAccount);
+
+
         $validated = $request->validate([
             'account_id' => 'nullable|exists:accounts,id',  // Validate accountId
             'first_name' => 'nullable|string|max:255',
@@ -131,6 +141,7 @@ class ContactController extends Controller
 
     public function destroy(Contact $contact)
     {
+        $this->authorize('delete', $contact);
         $contact->delete();
         return redirect('/contacts')->with('success', 'Contact deleted successfully.');
     }

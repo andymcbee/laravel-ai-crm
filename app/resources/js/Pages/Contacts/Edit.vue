@@ -6,7 +6,11 @@ import { Head } from '@inertiajs/vue3';
 import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
 import DeleteContactForm from "@/Pages/Contacts/Partials/DeleteContactForm.vue";
 
-const props = defineProps(["contact"]);
+
+const props = defineProps({
+    contact: Object,
+    can: Object, // Contains permissions from Laravel
+});
 </script>
 
 <template>
@@ -25,7 +29,8 @@ const props = defineProps(["contact"]);
                         class="max-w-xl"
                     />
                 </div>
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+
+                <div v-if="can.delete"  class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <DeleteContactForm class="max-w-xl" :contact="contact" />
                 </div>
 

@@ -23,6 +23,7 @@ class ContactPolicy
     public function view(User $user, Contact $contact): bool
     {
 
+        // any role may view any contact within an account they belong to
         return $user->accounts()
             ->where('accounts.id', $contact->account_id)
             ->exists();
@@ -33,9 +34,9 @@ class ContactPolicy
      */
     public function create(User $user, Account $account): bool
     {
-        // TODO: only allow mod and admin users to create
         return $user->accounts()
             ->where('accounts.id', $account->id)
+            ->wherePivotIn('role', ['admin', 'moderator'])
             ->exists();
     }
 
@@ -44,9 +45,10 @@ class ContactPolicy
      */
     public function update(User $user, Contact $contact): bool
     {
-        // TODO: only allow mod and admin users to create
+
         return $user->accounts()
             ->where('accounts.id', $contact->account_id)
+            ->wherePivotIn('role', ['admin', 'moderator'])
             ->exists();
     }
 
@@ -55,9 +57,9 @@ class ContactPolicy
      */
     public function delete(User $user, Contact $contact): bool
     {
-        // TODO: only allow admin users to create
         return $user->accounts()
             ->where('accounts.id', $contact->account_id)
+            ->wherePivotIn('role', ['admin'])
             ->exists();
     }
 
