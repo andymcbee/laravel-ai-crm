@@ -39,9 +39,15 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        $account1->users()->attach([$user1->id, $user2->id]);
-        $account2->users()->attach($user3->id);
-        $account3->users()->attach($user1->id);
+        $account1->users()->attach([
+            $user1->id => ['role' => 'admin'],
+            $user2->id => ['role' => 'moderator']
+        ]);
+
+        $account2->users()->attach($user3->id, ['role' => 'moderator']);
+
+        $account3->users()->attach($user1->id, ['role' => 'user']);
+
 
         Contact::factory(5)->for($account1)->create();
         Contact::factory(5)->for($account2)->create();
