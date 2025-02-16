@@ -7,7 +7,8 @@ import { Head, Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     contact: Object,
-    notes: Array
+    notes: Array,
+    can: Object,
 });
 
 
@@ -20,7 +21,7 @@ const props = defineProps({
         <template #header>
             <div class="flex   text-gray-800">
                 <div class=" w-72  p-5 overflow-y-auto" >
-                    <Link :href="route('contacts.edit', contact.id)" class="text-blue-500 hover:underline">
+                    <Link v-if="can.update" :href="route('contacts.edit', contact.id)" class="text-blue-500 hover:underline">
                         Edit Contact
                     </Link>
 

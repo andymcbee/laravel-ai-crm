@@ -51,6 +51,9 @@ class ContactController extends Controller
             ]),
             'activeAccount' => $activeAccount, // ✅ Pass active account explicitly
             'userAccounts' => $user->accounts, // ✅ Pass accounts explicitly for dropdown
+            'can' => [
+                'update' => Auth::user()->can('update', $contact),
+            ]
         ]);
     }
 
