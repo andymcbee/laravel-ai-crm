@@ -12,6 +12,7 @@ class ContactController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $this->authorize('viewAny', Contact::class);
         $activeAccount = session('active_account');
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
@@ -32,6 +33,7 @@ class ContactController extends Controller
     public function show(Contact $contact)
     {
         $user = Auth::user();
+        $this->authorize('view', $contact);
         $activeAccount = session('active_account');
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
@@ -43,6 +45,7 @@ class ContactController extends Controller
         return Inertia::render('Contacts/Show', [
             'contact' => $contact->only(['id', 'first_name', 'last_name', 'phone', 'email', 'company', 'title']),
             'notes' => $contact->notes->map(fn($note) => [
+                'id' => $note->id,
                 'text' => $note->text,
                 'created_at' => $note->created_at->diffForHumans()
             ]),

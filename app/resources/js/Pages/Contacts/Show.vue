@@ -43,9 +43,10 @@ const props = defineProps({
                             <li v-for="note in notes" :key="note.id" class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
                                 <div class="flex justify-between">
                                     <div class="font-semibold text-sm">{{note.created_at}} by Andrew (a@drew.com)</div>
-                                    <Link :href="route('contacts.edit', contact.id)" class="text-blue-500 hover:underline">
+                                    <Link :href="route('notes.edit', { note: note.id })" class="text-blue-500 hover:underline">
                                         Edit Note
                                     </Link>
+
                                 </div>
                                 <p>{{note.text}}</p>
 

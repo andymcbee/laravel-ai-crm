@@ -80,6 +80,8 @@ Route::middleware('auth')->group(function () {
     // notes
 
     Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
+    Route::get('/notes/{note}/edit', [NoteController::class, 'edit'])->name('notes.edit');
+    Route::put('/notes/{note}', [NoteController::class, 'update'])->name('notes.update');
 
 
 
