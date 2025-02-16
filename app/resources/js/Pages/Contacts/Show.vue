@@ -18,7 +18,7 @@ const props = defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex h-screen  text-gray-800">
+            <div class="flex   text-gray-800">
                 <div class=" w-72  p-5 overflow-y-auto" >
                     <Link :href="route('contacts.edit', contact.id)" class="text-blue-500 hover:underline">
                         Edit Contact

@@ -8,7 +8,8 @@ import TextAreaInput from "@/Components/TextAreaInput.vue";
 
 const page = usePage();
 
-const contactId = page.props.active_account.id
+const contactId = page.props.contact.id
+
 
 const form = useForm({
     contact_id: contactId,
@@ -16,7 +17,11 @@ const form = useForm({
 });
 
 const createNote = () => {
-    form.post(route('notes.store'));
+    form.post(route('notes.store'), {
+        onSuccess: () => {
+            form.reset();
+        }
+    });
 };
 
 </script>
