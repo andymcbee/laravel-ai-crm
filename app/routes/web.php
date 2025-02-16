@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Contact;
+use Carbon\Carbon;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +34,28 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    // Hardcoded data simulation
+    $totalContacts = Contact::count();
+    $newContacts = Contact::whereMonth('created_at', Carbon::now()->month)->count();
+
+    $contactsByCompany = Contact::selectRaw('company, COUNT(*) as count')
+        ->groupBy('company')
+        ->pluck('count', 'company');
+
+    $recentContacts = Contact::latest()->take(5)->get(['id', 'first_name', 'last_name', 'created_at']);
+
+    $contactsByMonth = Contact::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
+        ->groupBy('month')
+        ->orderBy('month', 'asc')
+        ->pluck('count', 'month');
+
+    return Inertia::render('Dashboard', [
+        'total_contacts' => $totalContacts,
+        'new_contacts' => $newContacts,
+        'contacts_by_company' => $contactsByCompany,
+        'recent_contacts' => $recentContacts,
+        'contacts_by_month' => $contactsByMonth,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
