@@ -37,7 +37,7 @@ const createNote = () => {
                 <TextAreaInput id="text" type="text" class="mt-1 block w-full" v-model="form.text" />
                 <InputError class="mt-2" :message="form.errors.text" />
             </div>
-            <TextInput id="contact_id" v-model="form.contact_id"/>
+            <TextInput id="contact_id" v-model="form.contact_id" hidden/>
 
 
 
