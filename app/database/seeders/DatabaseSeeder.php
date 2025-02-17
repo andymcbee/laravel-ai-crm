@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
         $account3->users()->attach($user1->id, ['role' => 'user']);
 
 
-        Contact::factory(6)->for($account1)->create([
+        Contact::factory(100)->for($account1)->create([
             'user_id' => $user1->id,
         ]);
         Contact::factory(12)->for($account1)->create([

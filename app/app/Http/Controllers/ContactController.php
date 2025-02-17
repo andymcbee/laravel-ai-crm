@@ -22,7 +22,8 @@ class ContactController extends Controller
 
 
         // Fetch contacts only for the active account
-        $contacts = Contact::where('account_id', $activeAccount->getAttribute('id'))->paginate(10);
+        $contacts = Contact::where('account_id', $activeAccount->getAttribute('id'))->paginate(25);
+
 
         return Inertia::render('Contacts/Index', [
             'contacts' => $contacts,
@@ -42,25 +43,26 @@ class ContactController extends Controller
             abort(403, 'Unauthorized access to account.');
         }
 
-        $contact->load('notes');
+        // Paginate notes and retain 'update_note' field
+        $notes = $contact->notes()->latest()->paginate(5)->through(fn($note) => [
+            'id' => $note->id,
+            'text' => $note->text,
+            'created_at' => $note->created_at->diffForHumans(),
+            'update_note' => $user->can('update', $note),
+        ]);
 
         return Inertia::render('Contacts/Show', [
             'contact' => $contact->only(['id', 'first_name', 'last_name', 'phone', 'email', 'company', 'title']),
-            'notes' => $contact->notes->map(fn($note) => [
-                'id' => $note->id,
-                'text' => $note->text,
-                'created_at' => $note->created_at->diffForHumans(),
-                'update_note' => Auth::user()->can('update', $note),
-            ]),
+            'notes' => $notes, // ✅ Paginated notes
             'activeAccount' => $activeAccount, // ✅ Pass active account explicitly
             'userAccounts' => $user->accounts, // ✅ Pass accounts explicitly for dropdown
             'can' => [
-                'update_contact' => Auth::user()->can('update', $contact),
-                'create_note' => Auth::user()->can('create', new Note(['account_id' => $activeAccount->getAttribute('id')])),
-
+                'update_contact' => $user->can('update', $contact),
+                'create_note' => $user->can('create', new Note(['account_id' => $activeAccount->getAttribute('id')])),
             ]
         ]);
     }
+
 
     public function update(Request $request, Contact $contact)
     {

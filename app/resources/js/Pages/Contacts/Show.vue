@@ -3,13 +3,18 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CreateNoteForm from "@/Pages/Notes/Partials/CreateNoteForm.vue";
 
 import { Head, Link } from '@inertiajs/vue3';
+import {computed} from "vue";
 
 
 const props = defineProps({
     contact: Object,
-    notes: Array,
+    notes: Object,
     can: Object,
 });
+
+const allNotes = computed(() => props.notes?.data)
+console.log(allNotes)
+const paginationLinks = computed(() => props.notes?.links || []);
 
 
 </script>
@@ -44,8 +49,8 @@ const props = defineProps({
 
                     <div class="text-lg font-bold text-gray-700 mt-8 mb-4">Notes</div>
                     <div>
-                        <ul v-if="notes.length" class="flex flex-col gap-6">
-                            <li v-for="note in notes" :key="note.id" class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <ul v-if="allNotes.length" class="flex flex-col gap-6">
+                            <li v-for="note in allNotes" :key="note.id" class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
                                 <div v-if="note.update_note" class="flex justify-between">
                                     <div class="font-semibold text-sm">{{note.created_at}} by Andrew (a@drew.com)</div>
                                     <Link :href="route('notes.edit', { note: note.id })" class="text-blue-500 hover:underline">
@@ -59,6 +64,21 @@ const props = defineProps({
 
                         </ul>
                         <p v-else class="text-gray-500 text-sm">No notes yet.</p>
+                    </div>
+                    <div class="mt-6">
+                        <template v-for="(link, index) in paginationLinks" :key="index">
+                            <Component
+                                :is="link.url && !link.active ? 'a' : 'span'"
+                                :href="link.url && !link.active ? link.url : null"
+                                v-html="link.label"
+                                class="px-2 py-1 border rounded"
+                                :class="{
+                                        'text-blue-500 hover:underline': link.url && !link.active,
+                                        'text-gray-400 cursor-default': !link.url || link.active
+                                    }"
+                            />
+                        </template>
+
                     </div>
                 </div>
 
