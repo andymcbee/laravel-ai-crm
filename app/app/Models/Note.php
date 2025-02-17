@@ -15,4 +15,6 @@ class Note extends Model
     {
         return $this->belongsTo(Contact::class);
     }
+
+    public function account(): belongsTo { return $this->belongsTo(Account::class); }
 }

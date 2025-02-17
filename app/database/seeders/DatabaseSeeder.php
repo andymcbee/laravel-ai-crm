@@ -53,6 +53,9 @@ class DatabaseSeeder extends Seeder
         Contact::factory(5)->for($account2)->create();
         Contact::factory(5)->for($account3)->create();
 
-        Note::factory(100)->create();
+
+        Note::factory(50)->for($account1)->create();
+        Note::factory(50)->for($account2)->create();
+        Note::factory(50)->for($account3)->create();
     }
 }
