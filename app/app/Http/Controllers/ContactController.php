@@ -20,8 +20,9 @@ class ContactController extends Controller
             abort(403, 'Unauthorized access to account.');
         }
 
+
         // Fetch contacts only for the active account
-        $contacts = Contact::where('account_id', $activeAccount->getAttribute('id'))->get();
+        $contacts = Contact::where('account_id', $activeAccount->getAttribute('id'))->paginate(10);
 
         return Inertia::render('Contacts/Index', [
             'contacts' => $contacts,

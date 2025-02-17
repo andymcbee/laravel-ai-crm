@@ -5,14 +5,15 @@ import { AgGridVue } from "ag-grid-vue3";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import {computed,  ref} from "vue";
 import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
+import {Link} from "@inertiajs/vue3";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const props = defineProps({
-  contacts: Array
+  contacts: Object
 });
-
-const rowData = computed(() => props.contacts)
+const rowData = computed(() => props.contacts?.data)
+const paginationLinks = computed(() => props.contacts?.links || []);
 
 const colDefs = ref([
     {
@@ -59,6 +60,22 @@ const colDefs = ref([
                         class="ag-theme-alpine w-full"
                         style="height: 500px"
                     ></ag-grid-vue>
+                    <!-- Paginator -->
+                    <div class="mt-6">
+                        <template v-for="(link, index) in paginationLinks" :key="index">
+                            <Component
+                                :is="link.url && !link.active ? 'a' : 'span'"
+                                :href="link.url && !link.active ? link.url : null"
+                                v-html="link.label"
+                                class="px-2 py-1 border rounded"
+                                :class="{
+                                        'text-blue-500 hover:underline': link.url && !link.active,
+                                        'text-gray-400 cursor-default': !link.url || link.active
+                                    }"
+                            />
+                        </template>
+
+                    </div>
                 </div>
             </div>
         </div>
