@@ -12,6 +12,7 @@ class NoteController extends Controller
     public function store(Request $request){
 
 
+        $user = Auth::user();
         $activeAccount = session('active_account');
 
         $this->authorize('create', new Note(['account_id' => $activeAccount->getAttribute('id')]));
@@ -30,7 +31,7 @@ class NoteController extends Controller
             'text' => $request->text,
             'contact_id' => $request->contact_id,
             'account_id' => $request->account_id,
-        ]);
+        ] + ['user_id' => $user->id]);
 
         return Inertia::location(route('contacts.show', ['contact' => $request->contact_id]));
 
