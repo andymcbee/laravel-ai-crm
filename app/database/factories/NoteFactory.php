@@ -17,11 +17,18 @@ class NoteFactory extends Factory
      */
     public function definition(): array
     {
+        // Select a contact that belongs to an account and a user
+        $contact = Contact::inRandomOrder()->first();
 
+        if (!$contact) {
+            $contact = Contact::factory()->create(); // Create a contact if none exist
+        }
 
         return [
-            'contact_id' => Contact::inRandomOrder()->first()->id ?? Contact::factory(),
-            'text' => fake()->sentence()
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,  // Ensure account_id matches the contact's account
+            'user_id' => $contact->user_id,        // Ensure user_id matches the contact's user
+            'text' => $this->faker->sentence()
         ];
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('contact_id')->constrained()->onDelete('cascade');
             $table->foreignId('account_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->text('text');
             $table->timestamps();
         });

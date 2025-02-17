@@ -66,8 +66,14 @@ class DatabaseSeeder extends Seeder
 
 
 
-        Note::factory(50)->for($account1)->create();
-        Note::factory(50)->for($account2)->create();
-        Note::factory(50)->for($account3)->create();
+        $contacts = Contact::all();
+
+        foreach ($contacts as $contact) {
+            Note::factory(5)->create([
+                'contact_id' => $contact->id,
+                'account_id' => $contact->account_id,
+                'user_id' => $contact->user_id,
+            ]);
+        }
     }
 }
