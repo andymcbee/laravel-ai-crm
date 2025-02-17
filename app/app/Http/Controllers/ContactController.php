@@ -111,7 +111,10 @@ class ContactController extends Controller
 
         $activeAccount = session('active_account');
 
-        $this->authorize('create', $activeAccount);
+        // this does not work because the second param binds
+        // to a specific policy that matches the type
+        // instead, pass a new Contact and assign the relevant value
+        $this->authorize('create', new Contact(['account_id' => $activeAccount->getAttribute('id')]));
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
             abort(403, 'Unauthorized access to account.');
@@ -128,7 +131,7 @@ class ContactController extends Controller
 
         $activeAccount = session('active_account');
 
-        $this->authorize('create', $activeAccount);
+        $this->authorize('create', new Contact(['account_id' => $activeAccount->getAttribute('id')]));
 
 
         $validated = $request->validate([

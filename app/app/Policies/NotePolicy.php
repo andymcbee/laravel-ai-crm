@@ -46,7 +46,7 @@ class NotePolicy
     public function update(User $user, Note $note): bool
     {
 
-        
+
 
 
         return $user->accounts()

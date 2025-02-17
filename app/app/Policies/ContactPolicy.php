@@ -32,10 +32,10 @@ class ContactPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Account $account): bool
+    public function create(User $user, Contact $contact): bool
     {
         return $user->accounts()
-            ->where('accounts.id', $account->id)
+            ->where('accounts.id', $contact->account_id)
             ->wherePivotIn('role', ['admin', 'moderator'])
             ->exists();
     }
