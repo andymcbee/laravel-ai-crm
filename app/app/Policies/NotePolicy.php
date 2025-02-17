@@ -31,23 +31,23 @@ class NotePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Account $account): bool
+    public function create(User $user, Note $note): bool
     {
-
-
-
-
         return $user->accounts()
-            ->where('accounts.id', $account->id)
+            ->where('accounts.id', $note->account_id) // Extract account_id from the Note model
             ->wherePivotIn('role', ['admin', 'moderator'])
             ->exists();
     }
+
 
     /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Note $note): bool
     {
+
+        
+
 
         return $user->accounts()
             ->where('accounts.id', $note->account_id)

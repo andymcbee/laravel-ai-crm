@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\Note;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -47,12 +48,15 @@ class ContactController extends Controller
             'notes' => $contact->notes->map(fn($note) => [
                 'id' => $note->id,
                 'text' => $note->text,
-                'created_at' => $note->created_at->diffForHumans()
+                'created_at' => $note->created_at->diffForHumans(),
+                'update_note' => Auth::user()->can('update', $note),
             ]),
             'activeAccount' => $activeAccount, // ✅ Pass active account explicitly
             'userAccounts' => $user->accounts, // ✅ Pass accounts explicitly for dropdown
             'can' => [
-                'update' => Auth::user()->can('update', $contact),
+                'update_contact' => Auth::user()->can('update', $contact),
+                'create_note' => Auth::user()->can('create', new Note(['account_id' => $activeAccount->getAttribute('id')])),
+
             ]
         ]);
     }

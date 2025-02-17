@@ -13,7 +13,9 @@ class NoteController extends Controller
 
 
         $activeAccount = session('active_account');
-        $this->authorize('create', $activeAccount);
+
+        $this->authorize('create', new Note(['account_id' => $activeAccount->getAttribute('id')]));
+
 
 
         $validated = $request->validate([
@@ -36,6 +38,8 @@ class NoteController extends Controller
 
     public function update(Request $request, Note $note){
 
+        $this->authorize('update', $note);
+
 
         $request->validate([
             'text' => 'required',
@@ -52,6 +56,7 @@ class NoteController extends Controller
     public function edit(Note $note){
         $user = Auth::user();
         $activeAccount = session('active_account');
+        $this->authorize('update', $note);
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
             abort(403, 'Unauthorized access to account.');
@@ -61,6 +66,10 @@ class NoteController extends Controller
             'note' => $note,
             'activeAccount' => $activeAccount,
             'userAccounts' => $user->accounts,
+            'can' => [
+                'update' => Auth::user()->can('update', $note),
+                'create' => Auth::user()->can('create', $note),
+            ]
         ]);
     }
 }
