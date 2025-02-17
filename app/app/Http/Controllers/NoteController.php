@@ -11,26 +11,31 @@ class NoteController extends Controller
 {
     public function store(Request $request){
 
-        $activeAccount = session('active_account');
 
+        $activeAccount = session('active_account');
         $this->authorize('create', $activeAccount);
 
 
-        $request->validate([
+        $validated = $request->validate([
             'text' => 'required',
-            'contact_id' => 'required'
+            'contact_id' => 'required',
+            'account_id' => 'required|exists:accounts,id',
         ]);
+
+
 
         Note::create([
             'text' => $request->text,
             'contact_id' => $request->contact_id,
+            'account_id' => $request->account_id,
         ]);
+
+        return Inertia::location(route('contacts.show', ['contact' => $request->contact_id]));
 
     }
 
     public function update(Request $request, Note $note){
 
-        $this->authorize('update', $note);
 
         $request->validate([
             'text' => 'required',
@@ -46,7 +51,6 @@ class NoteController extends Controller
 
     public function edit(Note $note){
         $user = Auth::user();
-        $this->authorize('update', $note);
         $activeAccount = session('active_account');
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {

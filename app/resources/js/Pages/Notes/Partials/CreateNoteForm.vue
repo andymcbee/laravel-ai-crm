@@ -9,11 +9,14 @@ import TextAreaInput from "@/Components/TextAreaInput.vue";
 const page = usePage();
 
 const contactId = page.props.contact.id
+const accountId = page.props.activeAccount.id
+console.log(accountId)
 
 
 const form = useForm({
     contact_id: contactId,
     text: '',
+    account_id: accountId
 });
 
 const createNote = () => {
@@ -38,6 +41,7 @@ const createNote = () => {
                 <InputError class="mt-2" :message="form.errors.text" />
             </div>
             <TextInput id="contact_id" v-model="form.contact_id" hidden/>
+            <TextInput id="account_id" v-model="form.account_id" hidden/>
 
 
 

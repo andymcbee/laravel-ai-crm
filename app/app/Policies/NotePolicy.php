@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\Account;
 use App\Models\Note;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class NotePolicy
 {
@@ -34,6 +33,10 @@ class NotePolicy
      */
     public function create(User $user, Account $account): bool
     {
+
+
+
+
         return $user->accounts()
             ->where('accounts.id', $account->id)
             ->wherePivotIn('role', ['admin', 'moderator'])
