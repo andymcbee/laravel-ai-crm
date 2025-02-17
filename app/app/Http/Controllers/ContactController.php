@@ -129,10 +129,11 @@ class ContactController extends Controller
     public function store(Request $request)
     {
 
+        $user = Auth::user();
+
         $activeAccount = session('active_account');
 
         $this->authorize('create', new Contact(['account_id' => $activeAccount->getAttribute('id')]));
-
 
         $validated = $request->validate([
             'account_id' => 'nullable|exists:accounts,id',  // Validate accountId
@@ -144,7 +145,7 @@ class ContactController extends Controller
             'title' => 'nullable|string|max:255',
         ]);
 
-        Contact::create($validated);
+        Contact::create($validated + ['user_id' => $user->id]);
 
         return redirect()->route('contacts.index')->with('success', 'Contact created successfully.');
     }

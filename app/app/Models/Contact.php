@@ -11,7 +11,7 @@ class Contact extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['first_name', 'last_name', 'title', 'company', 'email', 'phone', 'account_id'];
+    protected $fillable = ['first_name', 'last_name', 'title', 'company', 'email', 'phone', 'account_id', 'user_id'];
     public function account(): belongsTo { return $this->belongsTo(Account::class); }
     public function notes(): hasMany { return $this->hasMany(Note::class); }
 }
