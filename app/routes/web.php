@@ -3,7 +3,9 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Note;
 use Carbon\Carbon;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -50,12 +52,60 @@ Route::get('/dashboard', function () {
         ->orderBy('month', 'asc')
         ->pluck('count', 'month');
 
+
+
+
+    // TODO: ADD ACCOUNT ID
+
+    $startCurrent30 = Carbon::now()->subDays(30); // 30 days ago
+    $startPrevious30 = Carbon::now()->subDays(60); // 60 days ago (to get the previous 30 days window)
+    // new contacts
+    $contactCurrent30DaysCount = Contact::where('created_at', '>=', $startCurrent30)->count();
+    $contactPrevious30DaysCount = Contact::whereBetween('created_at', [$startPrevious30, $startCurrent30])->count();
+
+    $contactDifference = $contactCurrent30DaysCount - $contactPrevious30DaysCount;
+    $contactPercentageChange = $contactPrevious30DaysCount > 0
+        ? round(($contactDifference / $contactPrevious30DaysCount) * 100, 2)
+        : 100; // Assume 100% growth if no previous data
+
+
+    // new notes
+
+    $noteCurrent30DaysCount = Note::where('created_at', '>=', $startCurrent30)->count();
+    $notePrevious30DaysCount = Note::whereBetween('created_at', [$startPrevious30, $startCurrent30])->count();
+
+    $noteDifference = $noteCurrent30DaysCount - $notePrevious30DaysCount;
+
+    $notePercentageChange = $notePrevious30DaysCount > 0
+        ? round(($noteDifference / $notePrevious30DaysCount) * 100, 2)
+        : 100;
+
+
+
+    // total contacts
+
+    // add account id
+    $totalContactCount = Contact::count();
+
+
+    // users with contact count 30 days
+
+    $users = Account::find(1)->users()->select('first_name', 'last_name', 'email')->get();
+
+
+
+
     return Inertia::render('Dashboard', [
-        'total_contacts' => $totalContacts,
-        'new_contacts' => $newContacts,
-        'contacts_by_company' => $contactsByCompany,
-        'recent_contacts' => $recentContacts,
-        'contacts_by_month' => $contactsByMonth,
+        'new_contact_stats' => [
+            'last_30_days' => $contactCurrent30DaysCount,
+            'percent_change' => $contactPercentageChange,
+        ],
+        'new_note_stats' => [
+            'last_30_days' => $noteCurrent30DaysCount,
+            'percent_change' => $notePrevious30DaysCount,
+        ],
+        'total_contact_count' => $totalContactCount,
+        'users' => $users,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

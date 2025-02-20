@@ -22,20 +22,23 @@ class DatabaseSeeder extends Seeder
         $account3 = Account::factory()->create();
 
         $user1 = User::factory()->create([
-            'name' => 'User One',
-            'email' => '1@example.com',
+            'first_name' => 'James',
+            'last_name' => 'Dolce',
+            'email' => 'james.dolcel@acme.com',
             'password' => Hash::make('password'),
         ]);
 
         $user2 = User::factory()->create([
-            'name' => 'User Two',
-            'email' => '2@example.com',
+            'first_name' => 'Tina',
+            'last_name' => 'Steel',
+            'email' => 'tina.steel@acme.com',
             'password' => Hash::make('password'),
         ]);
 
         $user3 = User::factory()->create([
-            'name' => 'User Three',
-            'email' => '3@example.com',
+            'first_name' => 'Jim',
+            'last_name' => 'Smith',
+            'email' => 'jsmith@jcorp.com',
             'password' => Hash::make('password'),
         ]);
 
