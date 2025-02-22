@@ -45,10 +45,15 @@ class ContactController extends Controller
     }
 
 
-    public function show(Contact $contact)
+    public function show(Request $request, Contact $contact)
     {
-        $user = Auth::user();
+        $user = $request->user();
+
+        // authorize
         $this->authorize('view', $contact);
+
+        // check if account exists
+        // TODO move to middleware
         $activeAccount = session('active_account');
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
@@ -65,9 +70,9 @@ class ContactController extends Controller
 
         return Inertia::render('Contacts/Show', [
             'contact' => $contact->only(['id', 'first_name', 'last_name', 'phone', 'email', 'company', 'title']),
-            'notes' => $notes, // ✅ Paginated notes
-            'activeAccount' => $activeAccount, // ✅ Pass active account explicitly
-            'userAccounts' => $user->accounts, // ✅ Pass accounts explicitly for dropdown
+            'notes' => $notes,
+            'activeAccount' => $activeAccount,
+            'userAccounts' => $user->accounts,
             'can' => [
                 'update_contact' => $user->can('update', $contact),
                 'create_note' => $user->can('create', new Note(['account_id' => $activeAccount->getAttribute('id')])),
