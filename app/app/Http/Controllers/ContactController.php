@@ -132,10 +132,10 @@ class ContactController extends Controller
         return redirect()->back()->with('success', 'Contact updated successfully.');
     }
 
-    public function edit(Contact $contact)
+    public function edit(Request $request, Contact $contact)
     {
 
-        $user = Auth::user();
+        $user = $request->user();
         $this->authorize('update', $contact);
         $activeAccount = session('active_account');
 
