@@ -83,20 +83,51 @@ class ContactController extends Controller
 
     public function update(Request $request, Contact $contact)
     {
+
         $this->authorize('update', $contact);
 
         // Validate only editable fields
+
+        // always use array syntax for validation
+
+        // bad:
+//        $validated = $request->validate([
+//            'first_name' => 'required|string|max:255',
+//            'last_name' => 'required|string|max:255',
+//            'email' => 'required|email|max:255',
+//            'phone' => 'nullable|string|max:20',
+//            'company' => 'nullable|string|max:255',
+//            'title' => 'nullable|string|max:255',
+//        ]);
+        // good:
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'company' => 'nullable|string|max:255',
-            'title' => 'nullable|string|max:255',
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name'  => ['required', 'string', 'max:255'],
+            'email'      => ['required', 'email', 'max:255'],
+            'phone'      => ['nullable', 'string', 'max:20'],
+            'company'    => ['nullable', 'string', 'max:255'],
+            'title'      => ['nullable', 'string', 'max:255'],
         ]);
 
+
         // Update and save contact
-        $contact->update($validated);
+        // Never use mass assignment
+        // Passing the validated model is secure, however it is unreadable and harder to debug
+        // This also decreases the chances of a dev accidentally passing an unsafe object such as a direct unvalidated
+        // request object into the db
+        // bad: $contact->update($validated);
+
+        // instead, incrementally build the contact
+
+        $contact->first_name = $validated['first_name'];
+        $contact->last_name = $validated['last_name'];
+        $contact->email = $validated['email'];
+        $contact->phone = $validated['phone'] ?? null;
+        $contact->company = $validated['company'] ?? null;
+        $contact->title = $validated['title'] ?? null;
+
+        // once the object has been built, save it
+        $contact->save();
 
         return redirect()->back()->with('success', 'Contact updated successfully.');
     }
