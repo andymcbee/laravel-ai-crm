@@ -157,10 +157,10 @@ class ContactController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
 
-        $user = Auth::user();
+        $user = $request->user();
 
         $activeAccount = session('active_account');
 
