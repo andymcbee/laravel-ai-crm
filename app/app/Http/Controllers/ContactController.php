@@ -129,9 +129,6 @@ class ContactController extends Controller
         $this->authorize('update', $contact);
         $activeAccount = session('active_account');
 
-        if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
-            abort(403, 'Unauthorized access to account.');
-        }
 
         // we pass the delete permission outcome because the delete section should only
         // be visible to admin, not moderators.
