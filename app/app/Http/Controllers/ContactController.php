@@ -189,7 +189,6 @@ class ContactController extends Controller
         $this->authorize('create', new Contact(['account_id' => $activeAccount->getAttribute('id')]));
 
         $validated = $request->validate([
-            'account_id' => 'exists:accounts,id',  // Validate accountId
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
