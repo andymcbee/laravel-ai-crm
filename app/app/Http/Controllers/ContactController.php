@@ -136,6 +136,8 @@ class ContactController extends Controller
     {
 
         $user = $request->user();
+
+
         $this->authorize('update', $contact);
         $activeAccount = session('active_account');
 
@@ -150,7 +152,7 @@ class ContactController extends Controller
             'activeAccount' => $activeAccount,
             'userAccounts' => $user->accounts,
             'can' => [
-                'delete' => Auth::user()->can('delete', $contact),
+                'delete' => $user()->can('delete', $contact),
             ]
         ]);
     }
