@@ -10,11 +10,23 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
+
+        // Laravel's default dependancy injection gives us access to authenticated user
+        // via the Request object. No need to manually use the auth facade.
+        // bad: $user = Auth::user();
+        $user = $request->user();
+
+        // Authorization
         $this->authorize('viewAny', Contact::class);
+
+        // Retrieve the active account from the session
         $activeAccount = session('active_account');
+
+
+        // Since the active_account is set on the client, we need to ensure the authenticated user
+        // actually belongs to this account. Also ensure it is not null.
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
             abort(403, 'Unauthorized access to account.');

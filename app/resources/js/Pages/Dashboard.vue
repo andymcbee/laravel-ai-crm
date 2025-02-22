@@ -22,46 +22,43 @@ const usersWithActivity = ref(page.props.users)
 
 
 const colors = {
-    republican: '#f45a6d',
-    democrat: '#2780eb',
-    other: '#ffc180',
-    libertarian: '#34daa6',
+    currentYear: '#f45a6d',
+    prevYear: '#2780eb',
 }
+
+const monthNames = {
+    10: "October",
+    11: "November",
+    12: "December"
+};
+
 
 
 const data = ref([
     {
-        year: 1980,
-        republican: 43642639,
-        democrat: 35480948,
-        other: 6505863,
-        libertarian: 867401,
+        month: 10,
+        currentYear: 124,
+        prevYear: 32,
     },
     {
-        year: 1984,
-        republican: 54166829,
-        democrat: 37449813,
-        libertarian: 227204,
-        other: 811015,
+        month: 11,
+        currentYear: 223,
+        prevYear: 32,
     },
     {
-        year: 1988,
-        republican: 48642640,
-        democrat: 41716679,
-        libertarian: 409708,
-        other: 817798,
+        month: 12,
+        currentYear: 245,
+        prevYear: 62,
     }])
 
 const items = Object.entries(colors).map(([n, c]) => ({
     name: n,
     color: c,
 }))
-const x = (d) => d.year
+const x = (d) => d.month.toString(); // Convert month number to a string
 const y = [
-    (d) => d.republican,
-    (d) => d.democrat,
-    (d) => d.other,
-    (d) => d.libertarian,
+    (d) => d.currentYear,
+    (d) => d.prevYear,
 ]
 const color = (d, i) => items[i].color
 
@@ -165,11 +162,16 @@ const color = (d, i) => items[i].color
 
             <Card class="col-span-2">
                 <CardContent>
-                    <h2>U.S. Election Popular Vote Results by Political Party</h2>
+                    <h2>Contacts Added (Compared to prev. period)</h2>
                     <VisBulletLegend :items="items" />
                     <VisXYContainer :height="500">
                         <VisGroupedBar :data="data" :x="x" :y="y" :color="color" />
-                        <VisAxis type="x" label="Election Year" :numTicks="data.length" />
+                        <VisAxis
+                            type="x"
+                            label="Month"
+                            :scaleType="'band'"
+                        />
+
                         <VisAxis type="y" :tickFormat="(value) => (value / 10 ** 6).toFixed(1)" label="Number of Votes (millions)" />
                     </VisXYContainer>
                 </CardContent>
