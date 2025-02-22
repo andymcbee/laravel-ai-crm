@@ -101,9 +101,9 @@ class ContactController extends Controller
 //        ]);
         // good:
         $validated = $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name'  => ['required', 'string', 'max:255'],
-            'email'      => ['required', 'email', 'max:255'],
+            'first_name' => ['nullable', 'string', 'max:255'],
+            'last_name'  => ['nullable', 'string', 'max:255'],
+            'email'      => ['nullable', 'email', 'max:255'],
             'phone'      => ['nullable', 'string', 'max:20'],
             'company'    => ['nullable', 'string', 'max:255'],
             'title'      => ['nullable', 'string', 'max:255'],
@@ -119,9 +119,9 @@ class ContactController extends Controller
 
         // instead, incrementally build the contact
 
-        $contact->first_name = $validated['first_name'];
-        $contact->last_name = $validated['last_name'];
-        $contact->email = $validated['email'];
+        $contact->first_name = $validated['first_name'] ?? null;
+        $contact->last_name = $validated['last_name'] ?? null;
+        $contact->email = $validated['email'] ?? null;
         $contact->phone = $validated['phone'] ?? null;
         $contact->company = $validated['company'] ?? null;
         $contact->title = $validated['title'] ?? null;
