@@ -182,7 +182,7 @@ class ContactController extends Controller
     public function store(Request $request)
     {
 
-        $user = Auth::user();
+        $user = $request->user();
 
         $activeAccount = session('active_account');
 
