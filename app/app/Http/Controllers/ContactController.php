@@ -25,14 +25,6 @@ class ContactController extends Controller
         $activeAccount = session('active_account');
 
 
-        // Since the active_account is set on the client, we need to ensure the authenticated user
-        // actually belongs to this account. Also ensure it is not null.
-
-        if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
-            abort(403, 'Unauthorized access to account.');
-        }
-
-
         // Fetch contacts only for the active account
         $contacts = Contact::where('account_id', $activeAccount->getAttribute('id'))->paginate(25);
 
