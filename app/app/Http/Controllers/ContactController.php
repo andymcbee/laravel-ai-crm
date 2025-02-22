@@ -224,6 +224,8 @@ class ContactController extends Controller
 
     public function destroy(Contact $contact)
     {
+        // no need to access the auth instance due to it being protected
+        // via middleware
         $this->authorize('delete', $contact);
         $contact->delete();
         return redirect('/contacts')->with('success', 'Contact deleted successfully.');
