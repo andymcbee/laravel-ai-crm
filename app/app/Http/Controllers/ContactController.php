@@ -216,6 +216,8 @@ class ContactController extends Controller
         // fetch account_id from session, not front end
         $contact->account_id = $activeAccount->getAttribute('id');
 
+        $contact->user_id = $user->id;
+
         $contact->save();
 
         return redirect()->route('contacts.index')->with('success', 'Contact created successfully.');
