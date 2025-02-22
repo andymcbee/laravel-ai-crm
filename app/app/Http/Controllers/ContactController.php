@@ -198,7 +198,22 @@ class ContactController extends Controller
             'title' => 'nullable|string|max:255',
         ]);
 
-        Contact::create($validated + ['user_id' => $user->id]);
+        // replace mass assignment with incremental build of the object
+
+        //bad due to mass assigned validated object being passed:
+        // Contact::create($validated + ['user_id' => $user->id]);
+
+        // good:
+
+        $contact = new Contact();
+        $contact->first_name = $validated['first_name'] ?? null;
+        $contact->last_name = $validated['last_name'] ?? null;
+        $contact->email = $validated['email'] ?? null;
+        $contact->phone = $validated['phone'] ?? null;
+        $contact->company = $validated['company'] ?? null;
+        $contact->title = $validated['title'] ?? null;
+
+        $contact->save();
 
         return redirect()->route('contacts.index')->with('success', 'Contact created successfully.');
     }
