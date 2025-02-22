@@ -39,7 +39,6 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
             \App\Http\Middleware\SetActiveAccount::class,
-            \App\Http\Middleware\EnsureActiveAccountIsValid::class,
         ],
 
         'api' => [
@@ -68,5 +67,6 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'active.account' => \App\Http\Middleware\EnsureActiveAccountIsValid::class,
     ];
 }
