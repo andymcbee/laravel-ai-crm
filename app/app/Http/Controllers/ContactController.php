@@ -213,6 +213,9 @@ class ContactController extends Controller
         $contact->company = $validated['company'] ?? null;
         $contact->title = $validated['title'] ?? null;
 
+        // fetch account_id from session, not front end
+        $contact->account_id = $activeAccount->getAttribute('id');
+
         $contact->save();
 
         return redirect()->route('contacts.index')->with('success', 'Contact created successfully.');
