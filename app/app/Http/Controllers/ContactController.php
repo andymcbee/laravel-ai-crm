@@ -154,9 +154,6 @@ class ContactController extends Controller
         // instead, pass a new Contact and assign the relevant value
         $this->authorize('create', new Contact(['account_id' => $activeAccount->getAttribute('id')]));
 
-        if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
-            abort(403, 'Unauthorized access to account.');
-        }
 
         return Inertia::render('Contacts/Create', [
             'activeAccount' => $activeAccount,
