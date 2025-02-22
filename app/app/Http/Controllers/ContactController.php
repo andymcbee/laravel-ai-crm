@@ -48,10 +48,6 @@ class ContactController extends Controller
         // TODO move to middleware
         $activeAccount = session('active_account');
 
-        if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
-            abort(403, 'Unauthorized access to account.');
-        }
-
         // Paginate notes and retain 'update_note' field
         $notes = $contact->notes()->latest()->paginate(5)->through(fn($note) => [
             'id' => $note->id,
