@@ -91,22 +91,21 @@ Route::get('/dashboard', function () {
 
     // users with contact count 30 days
 
-    // TODO add 30 day period, resolve N+1 issue with notesCount
-    // First, fetch the users for the account without withCount
+    // TODO add 30 day period
     $users = Account::find(1)->users()
         ->select('users.id', 'users.first_name', 'users.last_name', 'users.email')
+        ->withCount('notes')
         ->get();
 
-// Now, map over each user and call the notes relationship count individually
     $users = $users->map(function ($user) {
         return [
             'firstName'  => $user->first_name,
             'lastName'   => $user->last_name,
             'email'      => $user->email,
-            'notesCount' => $user->notes()->count(), // Directly count the notes via the relationship
+            'notesCount' => $user->notes_count, 
         ];
     });
-    
+
 
 
     // test
