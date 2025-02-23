@@ -1,17 +1,22 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Note;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
+
 class ContactController extends Controller
 {
+
     public function index(Request $request)
     {
+
 
         // Laravel's default dependancy injection gives us access to authenticated user
         // via the Request object. No need to manually use the auth facade.
@@ -22,6 +27,7 @@ class ContactController extends Controller
         $this->authorize('viewAny', Contact::class);
 
         // Retrieve the active account from the session
+        /** @var Account|null $activeAccount */
         $activeAccount = session('active_account');
 
 
