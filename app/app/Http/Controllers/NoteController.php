@@ -48,12 +48,12 @@ class NoteController extends Controller
         $this->authorize('update', $note);
 
 
-        $request->validate([
+        $validated = $request->validate([
             'text' => 'required',
         ]);
 
         $note->update([
-            'text' => $request->text,
+            'text' => $validated['text'],
         ]);
 
         return Inertia::location(route('contacts.show', ['contact' => $note->contact_id]));
