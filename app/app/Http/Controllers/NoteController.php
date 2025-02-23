@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Note;
 use App\Services\ActiveAccountService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class NoteController extends Controller
@@ -78,8 +77,8 @@ class NoteController extends Controller
             'activeAccount' => $activeAccount,
             'userAccounts' => $user->accounts,
             'can' => [
-                'update' => Auth::user()->can('update', $note),
-                'create' => Auth::user()->can('create', $note),
+                'update' => $user->can('update', $note),
+                'create' => $user->can('create', $note),
             ]
         ]);
     }
