@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Note;
 use App\Services\ActiveAccountService;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 

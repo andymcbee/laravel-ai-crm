@@ -3,17 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
+use App\Services\ActiveAccountService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class NoteController extends Controller
 {
+
+    protected activeAccountService $activeAccountService;
+
+    public function __construct(ActiveAccountService $activeAccountService)
+    {
+        $this->activeAccountService = $activeAccountService;
+    }
     public function store(Request $request){
 
 
         $user = Auth::user();
-        $activeAccount = session('active_account');
+        $activeAccount = $this->activeAccountService->getActiveAccount();
 
         $this->authorize('create', new Note(['account_id' => $activeAccount->getAttribute('id')]));
 
@@ -56,7 +64,8 @@ class NoteController extends Controller
 
     public function edit(Note $note){
         $user = Auth::user();
-        $activeAccount = session('active_account');
+        $activeAccount = $this->activeAccountService->getActiveAccount();
+        
         $this->authorize('update', $note);
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
