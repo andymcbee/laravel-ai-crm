@@ -27,7 +27,6 @@ class ContactController extends Controller
         $this->authorize('viewAny', Contact::class);
 
         // Retrieve the active account from the session
-        /** @var Account|null $activeAccount */
         $activeAccount = session('active_account');
 
 
