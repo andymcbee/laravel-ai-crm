@@ -31,14 +31,11 @@ class NoteController extends Controller
         $validated = $request->validate([
             'text' => 'required',
             'contact_id' => 'required',
-            'account_id' => 'required|exists:accounts,id',
         ]);
 
-
-
         Note::create([
-            'text' => $request->text,
-            'contact_id' => $request->contact_id,
+            'text'       => $validated['text'],
+            'contact_id' => $validated['contact_id'],
             'account_id' => $activeAccount->getAttribute('id'),
         ] + ['user_id' => $user->id]);
 
