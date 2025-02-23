@@ -31,7 +31,6 @@ class NoteFactory extends Factory
         return [
             'contact_id' => $contact->id,
             'account_id' => $contact->account_id,  // Ensure account_id matches the contact's account
-            'user_id' => $contact->user_id,        // Ensure user_id matches the contact's user
             'text' => $this->faker->sentence(),
             'created_at' => $this->faker->dateTimeBetween($startDate, $endDate),
             'updated_at' => now(),

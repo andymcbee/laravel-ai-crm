@@ -10,7 +10,7 @@ class Note extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['contact_id', 'text', 'account_id', 'user_id'];
+    protected $fillable = ['contact_id', 'text', 'account_id'];
     public function contact(): belongsTo
     {
         return $this->belongsTo(Contact::class);

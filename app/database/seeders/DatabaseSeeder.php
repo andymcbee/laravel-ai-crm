@@ -75,7 +75,6 @@ class DatabaseSeeder extends Seeder
             Note::factory(5)->create([
                 'contact_id' => $contact->id,
                 'account_id' => $contact->account_id,
-                'user_id' => $contact->user_id,
             ]);
         }
     }
