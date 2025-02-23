@@ -19,6 +19,8 @@ const newNotesDifference = ref(page.props.new_note_stats.percent_change);
 
 const usersWithActivity = ref(page.props.users)
 
+console.log(usersWithActivity)
+
 
 
 const colors = {
@@ -197,18 +199,18 @@ const color = (d, i) => items[i].color
 
                                     <Avatar class="flex h-9 w-9 items-center justify-center space-y-0 border">
                                         <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                                        <AvatarFallback>{{ user.first_name.charAt(0) }}{{ user.last_name.charAt(0) }}</AvatarFallback>
+                                        <AvatarFallback>{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</AvatarFallback>
                                     </Avatar>
                                     <div class="ml-4 space-y-1">
                                         <p class="text-sm font-medium leading-none">
-                                            {{ user.first_name }} {{ user.last_name }}
+                                            {{ user.firstName }} {{ user.lastName }}
                                         </p>
                                         <p class="text-sm text-muted-foreground">
                                             {{ user.email }}
                                         </p>
                                     </div>
                                     <div class="ml-auto font-medium">
-                                        +16 contacts
+                                        {{user.notesCount }}
                                     </div>
                                 </div>
                             </li>

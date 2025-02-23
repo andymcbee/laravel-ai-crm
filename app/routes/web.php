@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Note;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -90,7 +91,29 @@ Route::get('/dashboard', function () {
 
     // users with contact count 30 days
 
-    $users = Account::find(1)->users()->select('first_name', 'last_name', 'email')->get();
+    // TODO add 30 day period, resolve N+1 issue with notesCount
+    // First, fetch the users for the account without withCount
+    $users = Account::find(1)->users()
+        ->select('users.id', 'users.first_name', 'users.last_name', 'users.email')
+        ->get();
+
+// Now, map over each user and call the notes relationship count individually
+    $users = $users->map(function ($user) {
+        return [
+            'firstName'  => $user->first_name,
+            'lastName'   => $user->last_name,
+            'email'      => $user->email,
+            'notesCount' => $user->notes()->count(), // Directly count the notes via the relationship
+        ];
+    });
+    
+
+
+    // test
+
+
+    //$user = User::withCount('notes')->find(1);
+   // dd($user->notes_count);
 
 
 
