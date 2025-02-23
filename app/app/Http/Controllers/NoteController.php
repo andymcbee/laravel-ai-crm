@@ -65,14 +65,16 @@ class NoteController extends Controller
 
     public function edit(Request $request, Note $note){
         $user = $request->user();
-        
+
         $activeAccount = $this->activeAccountService->getActiveAccount();
 
         $this->authorize('update', $note);
 
-        if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
-            abort(403, 'Unauthorized access to account.');
-        }
+        // remove this since activeAccount is evaluated in the activeAccountService
+        // and the user's account_id status is checked via the account.active middleware
+        //        if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
+        //            abort(403, 'Unauthorized access to account.');
+        //        }
 
         return Inertia::render('Notes/Edit', [
             'note' => $note,
