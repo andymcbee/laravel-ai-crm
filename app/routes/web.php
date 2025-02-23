@@ -94,7 +94,7 @@ Route::get('/dashboard', function () {
     // TODO add 30 day period
     $users = Account::find(1)->users()
         ->select('users.id', 'users.first_name', 'users.last_name', 'users.email')
-        ->withCount('notes')
+        ->withCount('notes', 'contacts')
         ->get();
 
     $users = $users->map(function ($user) {
@@ -102,7 +102,8 @@ Route::get('/dashboard', function () {
             'firstName'  => $user->first_name,
             'lastName'   => $user->last_name,
             'email'      => $user->email,
-            'notesCount' => $user->notes_count, 
+            'notesCount' => $user->notes_count,
+            'contactsCount' => $user->contacts_count,
         ];
     });
 

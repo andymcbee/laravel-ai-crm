@@ -209,8 +209,8 @@ const color = (d, i) => items[i].color
                                             {{ user.email }}
                                         </p>
                                     </div>
-                                    <div class="ml-auto font-medium">
-                                        {{user.notesCount }}
+                                    <div class="text-sm ml-auto font-medium">
+                                        Contacts: {{user.contactsCount }} Notes: {{user.notesCount }}
                                     </div>
                                 </div>
                             </li>
