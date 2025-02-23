@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Note;
+use App\Services\ActiveAccountService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -13,6 +14,13 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+
+    protected ActiveAccountService $activeAccountService;
+
+    public function __construct(ActiveAccountService $activeAccountService)
+    {
+        $this->activeAccountService = $activeAccountService;
+    }
 
     public function index(Request $request)
     {
@@ -27,7 +35,10 @@ class ContactController extends Controller
         $this->authorize('viewAny', Contact::class);
 
         // Retrieve the active account from the session
-        $activeAccount = session('active_account');
+        // moved this to a servivce class to check it is actually null or account type
+        //$activeAccount = session('active_account');
+
+        $activeAccount = $this->activeAccountService->getActiveAccount();
 
 
         // Fetch contacts only for the active account
@@ -49,9 +60,7 @@ class ContactController extends Controller
         // authorize
         $this->authorize('view', $contact);
 
-        // check if account exists
-        // TODO move to middleware
-        $activeAccount = session('active_account');
+        $activeAccount = $this->activeAccountService->getActiveAccount();
 
         // Paginate notes and retain 'update_note' field
         $notes = $contact->notes()->latest()->paginate(5)->through(fn($note) => [
@@ -132,7 +141,8 @@ class ContactController extends Controller
 
 
         $this->authorize('update', $contact);
-        $activeAccount = session('active_account');
+
+        $activeAccount = $this->activeAccountService->getActiveAccount();
 
 
         // we pass the delete permission outcome because the delete section should only
@@ -152,7 +162,7 @@ class ContactController extends Controller
 
         $user = $request->user();
 
-        $activeAccount = session('active_account');
+        $activeAccount = $this->activeAccountService->getActiveAccount();
 
         // this does not work because the second param binds
         // to a specific policy that matches the type
@@ -171,7 +181,7 @@ class ContactController extends Controller
 
         $user = $request->user();
 
-        $activeAccount = session('active_account');
+        $activeAccount = $this->activeAccountService->getActiveAccount();
 
         $this->authorize('create', new Contact(['account_id' => $activeAccount->getAttribute('id')]));
 
