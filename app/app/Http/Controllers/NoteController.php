@@ -39,7 +39,7 @@ class NoteController extends Controller
         Note::create([
             'text' => $request->text,
             'contact_id' => $request->contact_id,
-            'account_id' => $request->account_id,
+            'account_id' => $activeAccount->getAttribute('id'),
         ] + ['user_id' => $user->id]);
 
         return Inertia::location(route('contacts.show', ['contact' => $request->contact_id]));
