@@ -20,7 +20,8 @@ class NoteController extends Controller
     public function store(Request $request){
 
 
-        $user = Auth::user();
+        $user = $request->user();
+
         $activeAccount = $this->activeAccountService->getActiveAccount();
 
         $this->authorize('create', new Note(['account_id' => $activeAccount->getAttribute('id')]));
@@ -62,10 +63,11 @@ class NoteController extends Controller
 
     }
 
-    public function edit(Note $note){
-        $user = Auth::user();
-        $activeAccount = $this->activeAccountService->getActiveAccount();
+    public function edit(Request $request, Note $note){
+        $user = $request->user();
         
+        $activeAccount = $this->activeAccountService->getActiveAccount();
+
         $this->authorize('update', $note);
 
         if (!$activeAccount || !$user->accounts->contains('id', $activeAccount->getAttribute('id'))) {
