@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FollowUpController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Account;
@@ -158,7 +159,9 @@ Route::middleware(['auth', 'active.account'])->group(function () {
     Route::put('/notes/{note}', [NoteController::class, 'update'])->name('notes.update');
 
 
-    //
+    // follow up suggestion
+    Route::post('/follow-up/generate', [FollowUpController::class, 'generate'])->name('follow-up.generate');
+    Route::get('/follow-up{contact}', [FollowUpController::class, 'index'])->name('follow-up.index');
 
 
 
