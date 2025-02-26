@@ -158,6 +158,9 @@ Route::middleware(['auth', 'active.account'])->group(function () {
     Route::put('/notes/{note}', [NoteController::class, 'update'])->name('notes.update');
 
 
+    //
+
+
 
 
     Route::post('/account/switch', function (Request $request) {
