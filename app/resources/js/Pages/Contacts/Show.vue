@@ -4,6 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, Link} from '@inertiajs/vue3';
 import {computed, ref} from "vue";
 import ContactNotes from "@/Pages/Contacts/Partials/ContactNotes.vue";
+import ContactFollowUpWriter from "@/Pages/Contacts/Partials/ContactFollowUpWriter.vue";
 
 
 const props = defineProps({
@@ -69,7 +70,7 @@ const activeTab = ref('notes');
 
 
                     <ContactNotes v-if="activeTab === 'notes'" :can="can" :notes="notes"/>
-                    <div v-if="activeTab === 'follow-up'"> Follow Up Content Area ....</div>
+                    <ContactFollowUpWriter v-if="activeTab === 'follow-up'"/>
 
                 </div>
 
