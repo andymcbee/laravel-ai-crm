@@ -161,7 +161,7 @@ Route::middleware(['auth', 'active.account'])->group(function () {
 
     // follow up suggestion
     Route::post('/follow-up/generate', [FollowUpController::class, 'generate'])->name('follow-up.generate');
-    Route::get('/follow-up{contact}', [FollowUpController::class, 'index'])->name('follow-up.index');
+    Route::get('/follow-up/{contact}', [FollowUpController::class, 'index'])->name('follow-up.index');
 
 
 
